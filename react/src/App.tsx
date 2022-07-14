@@ -1,4 +1,4 @@
-import { useCallback, useState, useTransition } from "react";
+import { memo, useCallback, useState, useTransition } from "react";
 import classes from "./App.module.css";
 import { Item } from "./components/Item";
 import { SearchBox } from "./components/SearchBox";
@@ -17,11 +17,7 @@ function App() {
 
   return (
     <>
-      <div className={classes.pokemonList}>
-        {Array.from(itemMap.keys()).map((id) => {
-          return <Item key={id} id={id} searchQuery={searchQuery} />;
-        })}
-      </div>
+      <PokemonList searchQuery={searchQuery} />
       <footer className={classes.footer}>
         <p>
           Data is obtained from{" "}
@@ -37,5 +33,17 @@ function App() {
     </>
   );
 }
+
+const PokemonList: React.FC<{
+  searchQuery: string;
+}> = memo(({ searchQuery }) => {
+  return (
+    <div className={classes.pokemonList}>
+      {Array.from(itemMap.keys()).map((id) => {
+        return <Item key={id} id={id} searchQuery={searchQuery} />;
+      })}
+    </div>
+  );
+});
 
 export default App;
